@@ -1,20 +1,8 @@
 package com.uviyolabone.alcchallenge;
 
-import android.app.ActionBar;
-import android.app.ProgressDialog;
-import android.content.DialogInterface;
 import android.net.http.SslError;
+import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
-
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.webkit.SslErrorHandler;
 import android.webkit.WebView;
@@ -22,42 +10,45 @@ import android.webkit.WebViewClient;
 
 public class AboutALCActivity extends AppCompatActivity {
 
+    WebView myWebView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_about_alc);
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
 
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        myWebView = new WebView(getApplicationContext());
+        setContentView(myWebView);
 
-        WebView webView = (WebView)findViewById(R.id.website);
-        webView.getSettings().setJavaScriptEnabled(true);
-        webView.getSettings().setLoadWithOverviewMode(true);
-        webView.getSettings().setUseWideViewPort(true);
+        initView();
+    }
 
-        webView.setWebViewClient(new WvClient());
+    private void initView() {
 
-        webView.loadUrl("https://andela.com/alc/");
+        //setting the toolbar
+        setTitle(R.string.about_alc);
 
+        // Configure related browser settings
+        myWebView.getSettings().setLoadsImagesAutomatically(true);
+        myWebView.getSettings().setJavaScriptEnabled(true);
+        myWebView.setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY);
+
+        myWebView.setWebViewClient(new WebViewClient(){
+
+
+            @Override
+            public void onReceivedSslError(WebView view, SslErrorHandler handler, SslError error) {
+                handler.proceed();
+            }
+
+        });
+
+        // Load the initial URL
+        myWebView.loadUrl("https://andela.com/alc");
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                finish();
-                return true;
-        }
-
-        return super.onOptionsItemSelected(item);
+    public void onBackPressed() {
+        super.onBackPressed();
+        finish();
     }
-
-    public boolean onCreateOptionsMenu(Menu menu) {
-        return true;
-    }
-
-
-
 }

@@ -1,66 +1,53 @@
 package com.uviyolabone.alcchallenge;
 
 import android.content.Intent;
+import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
-
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-
 import android.view.View;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.widget.Button;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity
+        implements View.OnClickListener {
+
+    Button btnAboutALC;
+    Button btnMyProfile;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
 
+        initView();
+    }
 
-        Button about_alc = (Button)findViewById(R.id.about_alc);
-        about_alc.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(MainActivity.this ,AboutALCActivity.class));
-            }
-        });
+    private void initView() {
 
-        Button my_profile = findViewById(R.id.my_profile);
+        //Setting the toolbar
+        //getActionBar().setTitle(R.string.app_name);
+        setTitle(R.string.app_name);
 
-        my_profile.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(MainActivity.this,MyProfileActivity.class));
-            }
-        });
+        btnAboutALC = findViewById(R.id.about_alc);
+        btnAboutALC.setOnClickListener(this);
+
+        btnMyProfile = findViewById(R.id.profile);
+        btnMyProfile.setOnClickListener(this);
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }
+    public void onClick(View v) {
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
+        Intent intent;
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+        switch (v.getId()){
+            case R.id.about_alc:
+                intent = new Intent(MainActivity.this, AboutALCActivity.class);
+                startActivity(intent);
+                break;
+
+            case R.id.profile:
+                intent = new Intent(MainActivity.this, ProfileActivity.class);
+                startActivity(intent);
+                break;
         }
-
-        return super.onOptionsItemSelected(item);
     }
 }
